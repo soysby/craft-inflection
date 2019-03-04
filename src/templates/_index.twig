@@ -1,0 +1,55 @@
+{% extends "_layouts/cp" %}
+{% set title = craft.inflection.getPluginName() %}
+
+{% block actionButton %}
+    <div id="button-container">
+        <div class="btngroup submit">
+            <a class="btn submit add icon" href="{{ url('inflection/create') }}">
+                {{ 'Add new word' | t('inflection') }}
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <p id="noinflections"{% if items | length %} class="hidden"{% endif %}>
+        {{ "No inflections exist yet." | t('inflection') }}
+    </p>
+
+    {% if items | length %}
+        <table class="data fullwidth" id="inflections">
+            <thead>
+                <tr>
+                    <th>{{ 'Type'|t('app') }}</th>
+                    <th>{{ 'Section'|t('app') }}</th>
+                    <th>{{ 'Value'|t('app') }}</th>
+                    <th class="thin"></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr data-id="{{ item.id }}" data-name="{{ item.value }}">
+                    <th>{{ item.getType }}</th>
+                    <th>{{ item.getSection }}</th>
+                    <th>{{ item.value }}</th>
+                    <td class="thin"><a href="{{ url('inflection/edit/' ~ item.id) }}" class="settings icon" title="{{ 'Settings' | t('app') }}" role="button"></a></td>
+                    <td class="thin"><a class="delete icon" title="{{ 'Delete' | t('app') }}" role="button"></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {# TODO: add pagination #}
+    {% else %}
+        <p>No inflection entries.</p>
+    {% endif %}
+{% endblock %}
+
+{% js %}
+    var adminTable = new Craft.AdminTable({
+        tableSelector: '#inflections',
+        noItemsSelector: '#noinflections',
+        sortable: false,
+        deleteAction: 'inflection/default/delete',
+    });
+{% endjs %}

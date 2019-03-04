@@ -1,0 +1,21 @@
+{
+    "name": "soysby/inflection",
+    "description": "Inflection with craftcms",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "require": {
+        "craftcms/cms": "^3.0.0",
+        "wapmorgan/yii2-inflection": "dev-develop"
+    },
+    "autoload": {
+        "psr-4": {
+          "soysby\\inflection\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Inflection",
+        "handle": "inflection",
+        "class": "soysby\\inflection\\Inflection"
+    }
+}

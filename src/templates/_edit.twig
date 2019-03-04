@@ -1,0 +1,44 @@
+{% import '_includes/forms' as forms %}
+{% extends '_layouts/cp' %}
+
+{% set crumbs = [
+    { label: craft.inflection.getPluginName(), url: url('inflection') },
+] %}
+
+{% set fullPageForm = true %}
+{% set isNew = (inflection is not defined or not inflection.id) %}
+
+{% if isNew %}
+    {% set title = "Create a new inflection" |t('inflection') %}
+{% else %}
+    {% set title = inflection.value %}
+{% endif %}
+
+{% set content %}
+    <input type="hidden" name="action" value="inflection/default/save">
+    {% if not isNew %}<input type="hidden" name="inflectionId" value="{{ inflection.id }}">{% endif %}
+    {{ redirectInput('inflection') }}
+
+    {{ forms.selectField({
+        label: 'Type'|t('app'),
+        required: true,
+        name: 'type',
+        options: inflection.getTypeList(),
+        value: inflection.type
+    }) }}
+
+    {{ forms.selectField({
+        label: 'Section'|t('app'),
+        required: true,
+        name: 'section',
+        options: inflection.getSectionList(),
+        value: inflection.section
+    }) }}
+
+    {{ forms.textField({
+        label: 'Word'|t('inflection'),
+        required: true,
+        name: 'value',
+        value: inflection.value,
+    }) }}
+{% endset %}
